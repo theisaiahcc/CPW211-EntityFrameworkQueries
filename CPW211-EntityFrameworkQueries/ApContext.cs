@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace CPW211_EntityFrameworkQueries;
+namespace CPW211_EntityFrameworkQueries.Models;
 
 public partial class ApContext : DbContext
 {
