@@ -50,6 +50,27 @@ namespace CPW211_EntityFrameworkQueries
 
             MessageBox.Show(displayString.ToString());
         }
+
+        private void btnMiscQueries_Click(object sender, EventArgs e)
+        {
+            ApContext dbContext = new ApContext();
+
+            bool doesExist = (from v in dbContext.Vendors
+                              where v.VendorState == "WA"
+                              select v).Any();
+
+            int InvoiceCount = (from invoice in dbContext.Invoices
+                                select invoice).Count();
+
+            // Query a single vendor
+            Vendor ? singleVendor = (from v in dbContext.Vendors
+                                     where v.VendorName == "IBM"
+                                     select v).SingleOrDefault();
+            if ( singleVendor != null )
+            {
+
+            }
+        }
     }
 
     class VendorLocation
