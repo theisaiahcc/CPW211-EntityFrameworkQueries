@@ -1,4 +1,5 @@
 using CPW211_EntityFrameworkQueries.Models;
+using Microsoft.EntityFrameworkCore;
 using System.DirectoryServices.ActiveDirectory;
 using System.Linq;
 using System.Text;
@@ -68,14 +69,43 @@ namespace CPW211_EntityFrameworkQueries
                                      select v).SingleOrDefault();
             if ( singleVendor != null )
             {
-
+                // do something
             }
         }
+
+        private void btnVendorsAndInvoices_Click(object sender, EventArgs e)
+        {
+            ApContext dbContext = new();
+
+            // vendors left join
+            List<Vendor> allVendors = dbContext.Vendors.Include(v => v.Invoices).ToList();
+                                      /*(from v in dbContext.Vendors
+                                      join inv in dbContext.Invoices
+                                        on v.VendorId equals inv.VendorId into grouping
+                                      from inv in grouping.DefaultIfEmpty()
+                                      select v).ToList();*/
+
+            StringBuilder results = new StringBuilder();
+
+            foreach( Vendor v in allVendors )
+            {
+                results.Append(v.VendorName);
+                foreach (Invoice inv in v.Invoices)
+                {
+                    results.Append(", ");
+                    results.Append(inv.InvoiceNumber);
+                }
+                results.AppendLine();
+            }
+            MessageBox.Show(results.ToString());
+        }
+        
     }
 
     class VendorLocation
     {
-        public string VendorName { get; set;}
-        public string VendorState { get; set;}
-        public string VendorCity { get; set;}
+        public string VendorName { get; set; }
+        public string VendorState { get; set; }
+        public string VendorCity { get; set; }
+    }
 }
